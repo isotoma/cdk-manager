@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.1.1](https://github.com/isotoma/cdk-manager/compare/0.1.0...0.1.1)
+
+> 15 August 2022
+
+- Fix info message [`c91b446`](https://github.com/isotoma/cdk-manager/commit/c91b4465c2dadd943174d2fc857a0be81730f033)
+
 #### 0.1.0
 
 > 15 August 2022
