@@ -488,7 +488,7 @@ export class PipelineManager<A> {
         console.log(`Using account ${target}`);
 
         const targetSuffix = process.env['TARGET_ENVIRONMENT_SUFFIX'];
-        console.log(`Using target suffix ${target}`);
+        console.log(`Using target suffix ${targetSuffix}`);
 
         return this.getPipelineCdkApp(target, targetSuffix);
     }
