@@ -1,0 +1,51 @@
+{
+    "name": "cdk-manager",
+    "version": "0.00",
+    "description": "For managing CDK deployments",
+    "license": "MIT",
+    "author": {
+        "name": "Isotoma Limited",
+        "email": "hello@isotoma.com",
+        "url": "https://isotoma.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/isotoma/cdk-manager"
+    },
+    "keywords": [
+        "cdk"
+    ],
+    "scripts": {
+        "test": "jest",
+        "tsc": "tsc",
+        "clean": "rm -rf build/",
+        "compile": "npm run clean && npm run -- tsc --outDir build/ && cp package.json README.md ./build/",
+        "version": "auto-changelog --template ./changelog_template.hbs -p && git add CHANGELOG.md",
+        "lint": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --fix",
+        "lint-check": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --max-warnings 0"
+    },
+    "peerDependencies": {
+        "aws-cdk-lib": "^2.0.0",
+        "constructs": "^10.0.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.0",
+        "@types/node": ">=10",
+        "@typescript-eslint/eslint-plugin": "^4.8.2",
+        "@typescript-eslint/parser": "4.8.2",
+        "auto-changelog": "^1.16.2",
+        "aws-cdk-lib": "^2.15.0",
+        "constructs": "^10.0.0",
+        "eslint": "6.8.0",
+        "eslint-config-prettier": "6.9.0",
+        "eslint-plugin-prettier": "3.1.2",
+        "jest": "^26.0.0",
+        "prettier": "^2.7.1",
+        "ts-jest": "^26.0.0",
+        "typescript": ">=3.0.0"
+    },
+    "dependencies": {
+        "cmd-ts": "^0.11.0",
+        "yaml": "^2.1.1"
+    }
+}
