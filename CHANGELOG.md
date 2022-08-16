@@ -1,5 +1,12 @@
 ### Changelog
 
+#### [0.4.0](https://github.com/isotoma/cdk-manager/compare/0.3.0...0.4.0)
+
+> 16 August 2022
+
+- Activate command [`#5`](https://github.com/isotoma/cdk-manager/pull/5)
+- Attempt to make CLI commands extensible [`#4`](https://github.com/isotoma/cdk-manager/pull/4)
+
 #### [0.3.0](https://github.com/isotoma/cdk-manager/compare/0.2.2...0.3.0)
 
 > 16 August 2022
