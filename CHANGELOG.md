@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.3.0](https://github.com/isotoma/cdk-manager/compare/0.2.2...0.3.0)
+
+> 16 August 2022
+
+- Split to separate files [`#3`](https://github.com/isotoma/cdk-manager/pull/3)
+
 #### [0.2.2](https://github.com/isotoma/cdk-manager/compare/0.2.1...0.2.2)
 
 > 16 August 2022
