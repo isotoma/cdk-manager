@@ -1,7 +1,6 @@
 import { Stack, StackProps, Stage, StageProps } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as pipelines from 'aws-cdk-lib/pipelines';
-import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 import type { Construct } from 'constructs';
 import { parse as parseYaml } from 'yaml';
 
@@ -590,6 +589,11 @@ export class PipelineStack<A> extends Stack {
         };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getDockerCredentials(accountConfig: Account, pipelineConfig: SubInstance<A>): Array<pipelines.DockerCredential> {
+        return [];
+    }
+
     public readonly manager: CdkManager<A>;
 
     constructor(scope: Construct, id: string, manager: CdkManager<A>, accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps) {
@@ -612,8 +616,8 @@ export class PipelineStack<A> extends Stack {
                 },
             }),
             crossAccountKeys: true,
-            dockerCredentials: [pipelines.DockerCredential.dockerHub(secrets.Secret.fromSecretNameV2(this, 'docker-hub-secret', 'docker-hub'))],
             codeBuildDefaults: this.getCodeBuildOptions(accountConfig, pipelineConfig),
+            dockerCredentials: this.getDockerCredentials(),
             assetPublishingCodeBuildDefaults: {
                 buildEnvironment: {
                     computeType: codebuild.ComputeType.MEDIUM,
