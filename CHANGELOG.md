@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.2.0](https://github.com/isotoma/cdk-manager/compare/0.1.1...0.2.0)
+
+> 16 August 2022
+
+- Rename exports [`#2`](https://github.com/isotoma/cdk-manager/pull/2)
+
 #### [0.1.1](https://github.com/isotoma/cdk-manager/compare/0.1.0...0.1.1)
 
 > 15 August 2022
