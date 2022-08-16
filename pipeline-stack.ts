@@ -1,0 +1,148 @@
+import type { CdkManager } from './manager';
+import type { Account, Instance, SubInstance } from './config';
+import { Stack, StackProps, Stage, StageProps } from 'aws-cdk-lib';
+import * as pipelines from 'aws-cdk-lib/pipelines';
+import * as codebuild from 'aws-cdk-lib/aws-codebuild';
+import type { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib';
+
+export const filterNils = <A>(array: Array<A | undefined>): Array<A> => {
+    const filtered: Array<A> = [];
+    for (const item of array) {
+        if (typeof item !== 'undefined') {
+            filtered.push(item);
+        }
+    }
+    return filtered;
+};
+
+export interface CodeBuildContext {
+    commitSha?: string;
+    buildNumber?: string;
+}
+
+export class PipelineStack<A> extends Stack {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getSourceConnection(accountConfig: Account, pipelineConfig: Instance<A>): pipelines.IFileSetProducer {
+        throw new Error('Not implemented');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getInstallCommands(accountConfig: Account, pipelineConfig: Instance<A>): Array<string> {
+        throw new Error('Not implemented');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getCommands(accountConfig: Account, pipelineConfig: Instance<A>): Array<string> {
+        throw new Error('Not implemented');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    addStacksToDeploymentStage(stage: Stage, accountConfig: Account, pipelineConfig: SubInstance<A>, codeBuildContext: CodeBuildContext): void {
+        throw new Error('Not implemented');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getStageProps(accountConfig: Account, pipelineConfig: SubInstance<A>): StageProps {
+        return {};
+    }
+
+    createStage(accountConfig: Account, pipelineConfig: SubInstance<A>): Stage {
+        const stage = new Stage(this, filterNils([accountConfig.name, pipelineConfig.suffix]).join('-'), this.getStageProps(accountConfig, pipelineConfig));
+        const codeBuildContext = {
+            commitSha: process.env['CODEBUILD_RESOLVED_SOURCE_VERSION'],
+            buildNumber: process.env['CODEBUILD_BUILD_NUMBER'],
+        };
+
+        this.addStacksToDeploymentStage(stage, accountConfig, pipelineConfig, codeBuildContext);
+        return stage;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getCodeBuildOptions(accountConfig: Account, pipelineConfig: Instance<A>): pipelines.CodeBuildOptions {
+        return {
+            buildEnvironment: {
+                buildImage: codebuild.LinuxBuildImage.STANDARD_6_0,
+            },
+            partialBuildSpec: codebuild.BuildSpec.fromObject({
+                phases: {
+                    install: {
+                        'runtime-versions': {
+                            nodejs: '16.x',
+                        },
+                    },
+                },
+            }),
+        };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getDockerCredentials(accountConfig: Account, pipelineConfig: SubInstance<A>): Array<pipelines.DockerCredential> {
+        return [];
+    }
+
+    public readonly manager: CdkManager<A>;
+
+    constructor(scope: Construct, id: string, manager: CdkManager<A>, accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps) {
+        super(scope, id, stackProps);
+        this.manager = manager;
+
+        const pipeline = new pipelines.CodePipeline(this, 'pipeline', {
+            dockerEnabledForSynth: false,
+            synth: new pipelines.ShellStep('synth', {
+                input: this.getSourceConnection(accountConfig, pipelineConfig),
+                installCommands: this.getInstallCommands(accountConfig, pipelineConfig),
+                commands: this.getCommands(accountConfig, pipelineConfig),
+                env: {
+                    TARGET_ACCOUNT: accountConfig.name,
+                    ...(pipelineConfig.suffix
+                        ? {
+                              TARGET_ENVIRONMENT_SUFFIX: pipelineConfig.suffix,
+                          }
+                        : {}),
+                },
+            }),
+            crossAccountKeys: true,
+            codeBuildDefaults: this.getCodeBuildOptions(accountConfig, pipelineConfig),
+            dockerCredentials: this.getDockerCredentials(accountConfig, pipelineConfig),
+            assetPublishingCodeBuildDefaults: {
+                buildEnvironment: {
+                    computeType: codebuild.ComputeType.MEDIUM,
+                },
+            },
+        });
+
+        if (pipelineConfig.sequencedInstances) {
+            for (const sequencedPipeline of pipelineConfig.sequencedInstances) {
+                const sequencedAccount = manager.getAccount(sequencedPipeline.accountName);
+                pipeline.addStage(
+                    this.createStage(sequencedAccount, sequencedPipeline),
+                    sequencedPipeline.requiresApproval
+                        ? {
+                              pre: [
+                                  new pipelines.ManualApprovalStep(`DeployTo_${sequencedAccount.name}`, {
+                                      comment: `Deploy to ${sequencedAccount.name} (${sequencedPipeline.suffix}) (${sequencedAccount.accountNumber})`,
+                                  }),
+                              ],
+                          }
+                        : {},
+                );
+            }
+        }
+
+        pipeline.addStage(
+            this.createStage(accountConfig, pipelineConfig),
+            pipelineConfig.requiresApproval
+                ? {
+                      pre: [
+                          new pipelines.ManualApprovalStep(`DeployTo_${accountConfig.name}`, {
+                              comment: `Deploy to ${accountConfig.name} (${pipelineConfig.suffix}) (${accountConfig.accountNumber})`,
+                          }),
+                      ],
+                  }
+                : {},
+        );
+
+        pipeline.buildPipeline();
+    }
+}
