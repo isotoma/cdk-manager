@@ -617,7 +617,7 @@ export class PipelineStack<A> extends Stack {
             }),
             crossAccountKeys: true,
             codeBuildDefaults: this.getCodeBuildOptions(accountConfig, pipelineConfig),
-            dockerCredentials: this.getDockerCredentials(),
+            dockerCredentials: this.getDockerCredentials(accountConfig, pipelineConfig),
             assetPublishingCodeBuildDefaults: {
                 buildEnvironment: {
                     computeType: codebuild.ComputeType.MEDIUM,
