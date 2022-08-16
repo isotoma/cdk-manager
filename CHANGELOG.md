@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.2.2](https://github.com/isotoma/cdk-manager/compare/0.2.1...0.2.2)
+
+> 16 August 2022
+
+- Fix getDockerCredentials [`61947ac`](https://github.com/isotoma/cdk-manager/commit/61947acb8457275b559c52007a81baaa9375912c)
+
 #### [0.2.1](https://github.com/isotoma/cdk-manager/compare/0.2.0...0.2.1)
 
 > 16 August 2022
