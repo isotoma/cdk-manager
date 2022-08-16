@@ -5,6 +5,25 @@ import { execPromise, executeCommand, commandSetToString } from './exec-utils';
 import type { CommandSet, EnvironmentVariables } from './exec-utils';
 import * as cmdTs from 'cmd-ts';
 
+export const pipelineApplyCliArgs = {
+    account: cmdTs.option({
+        type: cmdTs.optional(cmdTs.string),
+        long: 'account',
+    }),
+    noDefaultProfiles: cmdTs.flag({
+        type: cmdTs.boolean,
+        long: 'no-default-profiles',
+    }),
+    deploymentSuffix: cmdTs.option({
+        type: cmdTs.optional(cmdTs.string),
+        long: 'deployment-suffix',
+    }),
+    apply: cmdTs.flag({
+        type: cmdTs.boolean,
+        long: 'apply',
+    }),
+};
+
 export interface PipelineApplyCliCommandArgs {
     account: string | undefined;
     apply: boolean;
@@ -108,31 +127,13 @@ export class PipelineApplyCliCommand<A, M extends CdkManager<A>> extends BaseCli
             }
         }
     }
-
-    run(argv: Array<string>): void {
-        const cmd = cmdTs.command({
-            name: 'pipeline-apply',
-            args: {
-                account: cmdTs.option({
-                    type: cmdTs.optional(cmdTs.oneOf(this.manager.getAccountNames())),
-                    long: 'account',
-                }),
-                noDefaultProfiles: cmdTs.flag({
-                    type: cmdTs.boolean,
-                    long: 'no-default-profiles',
-                }),
-                deploymentSuffix: cmdTs.option({
-                    type: cmdTs.optional(cmdTs.string),
-                    long: 'deployment-suffix',
-                }),
-                apply: cmdTs.flag({
-                    type: cmdTs.boolean,
-                    long: 'apply',
-                }),
-            },
-            handler: this.handler.bind(this),
-        });
-
-        cmdTs.run(cmd, argv);
-    }
 }
+
+export const pipelineApplyCliRun = <A, M extends CdkManager<A>>(manager: M, argv: Array<string>): void => {
+    const cls = new PipelineApplyCliCommand(manager);
+    cmdTs.run(cmdTs.command({
+        name: 'pipeline-apply',
+        args: pipelineApplyCliArgs,
+        handler: cls.handler.bind(cls),
+    }), argv);
+};

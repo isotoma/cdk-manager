@@ -5,6 +5,25 @@ import type { CommandSet, EnvironmentVariables } from './exec-utils';
 import { parse as parseYaml } from 'yaml';
 import * as cmdTs from 'cmd-ts';
 
+export const bootstrapApplyCliArgs = {
+    account: cmdTs.option({
+        type: cmdTs.optional(cmdTs.string),
+        long: 'account',
+    }),
+    region: cmdTs.option({
+        type: cmdTs.optional(cmdTs.string),
+        long: 'region',
+    }),
+    noDefaultProfiles: cmdTs.flag({
+        type: cmdTs.boolean,
+        long: 'no-default-profiles',
+    }),
+    apply: cmdTs.flag({
+        type: cmdTs.boolean,
+        long: 'apply',
+    }),
+};
+
 export interface BootstrapApplyCliCommandArgs {
     account: string | undefined;
     region: string | undefined;
@@ -123,31 +142,13 @@ export class BootstrapApplyCliCommand<A, M extends CdkManager<A>> extends BaseCl
             }
         }
     }
-
-    run(argv: Array<string>): void {
-        const cmd = cmdTs.command({
-            name: 'bootstrapper',
-            args: {
-                account: cmdTs.option({
-                    type: cmdTs.optional(cmdTs.oneOf(this.manager.getAccountNames())),
-                    long: 'account',
-                }),
-                region: cmdTs.option({
-                    type: cmdTs.optional(cmdTs.string),
-                    long: 'region',
-                }),
-                noDefaultProfiles: cmdTs.flag({
-                    type: cmdTs.boolean,
-                    long: 'no-default-profiles',
-                }),
-                apply: cmdTs.flag({
-                    type: cmdTs.boolean,
-                    long: 'apply',
-                }),
-            },
-            handler: this.handler.bind(this),
-        });
-
-        cmdTs.run(cmd, argv);
-    }
 }
+
+export const bootstrapApplyCliRun = <A, M extends CdkManager<A>>(manager: M, argv: Array<string>): void => {
+    const cls = new BootstrapApplyCliCommand(manager);
+    cmdTs.run(cmdTs.command({
+        name: 'bootstrap-apply',
+        args: bootstrapApplyCliArgs,
+        handler: cls.handler.bind(cls),
+    }), argv);
+};
