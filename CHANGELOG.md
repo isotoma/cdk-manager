@@ -1,5 +1,12 @@
 ### Changelog
 
+#### [0.2.1](https://github.com/isotoma/cdk-manager/compare/0.2.0...0.2.1)
+
+> 16 August 2022
+
+- Actually use getCodeBuildOptions [`1580b03`](https://github.com/isotoma/cdk-manager/commit/1580b03e2337e99f5d1668d44d89a2baea2c6134)
+- Fix use of dockerCredentials [`2ebfcaa`](https://github.com/isotoma/cdk-manager/commit/2ebfcaa79ad4578905e01042feabc376e4a41197)
+
 #### [0.2.0](https://github.com/isotoma/cdk-manager/compare/0.1.1...0.2.0)
 
 > 16 August 2022
