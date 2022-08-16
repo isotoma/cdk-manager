@@ -101,7 +101,7 @@ export interface Instance<A> extends SubInstance<A> {
 }
 
 // TODO: is there a way of making these easier to extend?
-export abstract class BaseCliCommand<A, M extends PipelineManager<A>> {
+export abstract class BaseCliCommand<A, M extends CdkManager<A>> {
     public readonly manager: M;
     constructor(manager: M) {
         this.manager = manager;
@@ -117,7 +117,7 @@ export interface BootstrapApplyCliCommandArgs {
     noDefaultProfiles: boolean;
 }
 
-export class BootstrapApplyCliCommand<A, M extends PipelineManager<A>> extends BaseCliCommand<A, M> {
+export class BootstrapApplyCliCommand<A, M extends CdkManager<A>> extends BaseCliCommand<A, M> {
     getBootstrapCommands(accountName: string, region: string | undefined, noDefaultProfiles: boolean, currentCdkProvidedBootstrapVersion: number): Array<CommandSet> {
         const account = this.manager.getAccount(accountName);
         if (!account.cdkBootstrap) {
@@ -264,7 +264,7 @@ export interface PipelineApplyCliCommandArgs {
     deploymentSuffix: string | undefined;
 }
 
-export class PipelineApplyCliCommand<A, M extends PipelineManager<A>> extends BaseCliCommand<A, M> {
+export class PipelineApplyCliCommand<A, M extends CdkManager<A>> extends BaseCliCommand<A, M> {
     getPipelineDeployShellCommand(account: Account, instance: Instance<A>, extraEnv?: Record<string, string>): { command: string; env: Record<string, string> } {
         const env: Record<string, string> = {
             TARGET_ACCOUNT: account.name,
@@ -389,7 +389,7 @@ export class PipelineApplyCliCommand<A, M extends PipelineManager<A>> extends Ba
     }
 }
 
-export class PipelineManager<A> {
+export class CdkManager<A> {
     accounts: Array<Account>;
     instances: Array<Instance<A>>;
 
@@ -535,7 +535,7 @@ export class PipelineManager<A> {
     }
 }
 
-export class PipelineManagerPipelineStack<A> extends Stack {
+export class PipelineStack<A> extends Stack {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getSourceConnection(accountConfig: Account, pipelineConfig: Instance<A>): pipelines.IFileSetProducer {
         throw new Error('Not implemented');
@@ -590,9 +590,9 @@ export class PipelineManagerPipelineStack<A> extends Stack {
         };
     }
 
-    public readonly manager: PipelineManager<A>;
+    public readonly manager: CdkManager<A>;
 
-    constructor(scope: Construct, id: string, manager: PipelineManager<A>, accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps) {
+    constructor(scope: Construct, id: string, manager: CdkManager<A>, accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps) {
         super(scope, id, stackProps);
         this.manager = manager;
 
