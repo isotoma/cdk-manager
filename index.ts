@@ -612,26 +612,8 @@ export class PipelineStack<A> extends Stack {
                 },
             }),
             crossAccountKeys: true,
-            codeBuildDefaults: {
-                buildEnvironment: {
-                    buildImage: codebuild.LinuxBuildImage.STANDARD_6_0,
-                    environmentVariables: {
-                        DOCKER_BUILDKIT: {
-                            value: '1',
-                        },
-                    },
-                },
-                partialBuildSpec: codebuild.BuildSpec.fromObject({
-                    phases: {
-                        install: {
-                            'runtime-versions': {
-                                nodejs: '16.x',
-                            },
-                        },
-                    },
-                }),
-            },
             dockerCredentials: [pipelines.DockerCredential.dockerHub(secrets.Secret.fromSecretNameV2(this, 'docker-hub-secret', 'docker-hub'))],
+            codeBuildDefaults: this.getCodeBuildOptions(accountConfig, pipelineConfig),
             assetPublishingCodeBuildDefaults: {
                 buildEnvironment: {
                     computeType: codebuild.ComputeType.MEDIUM,
