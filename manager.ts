@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { bootstrapApplyCliRun } from './bootstrap-apply';
 import { pipelineApplyCliRun } from './pipeline-apply';
+import { activateCliRun } from './activate';
 import type { EnvironmentVariables } from './exec-utils';
 import type { Account, Instance } from './config';
 
@@ -120,15 +121,12 @@ export class CdkManager<A> {
         throw new Error('Not implemented');
     }
 
-    getActivationEnvironmentVariables(accountName?: string, suffix?: string): EnvironmentVariables {
-        const env: EnvironmentVariables = {};
-        if (accountName) {
-            env['TARGET_ACCOUNT'] = accountName;
-        }
-        if (accountName && suffix) {
-            env['TARGET_ENVIRONMENT_SUFFIX'] = suffix;
-        }
-        return env;
+    getExtraActivationEnvironmentVariables(account: Account, instance?: Instance<A>): EnvironmentVariables {
+        return {};
+    }
+
+    getActivationDefaultAccountName(): string {
+        throw new Error('Unknown default deployment profile');
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -141,11 +139,25 @@ export class CdkManager<A> {
         throw new Error('Unknown default instance profile');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getDefaultPipelineDeploymentRegion(account: Account, instance?: Instance<A>): string {
+        throw new Error('Unknown default deployment region');
+    }
+
+    getDefaultInstanceRegion(account: Account, instance: Instance<A>): string {
+        // Default to the same region as the pipeline
+        return this.getDefaultPipelineDeploymentRegion(account, instance);
+    }
+
     runPipelineApplyFromArgv(argv: Array<string>): void {
         pipelineApplyCliRun(this, argv);
     }
 
     runBootstrapApplyFromArgv(argv: Array<string>): void {
         bootstrapApplyCliRun(this, argv);
+    }
+
+    runActivateFromArgv(argv: Array<string>): void {
+        activateCliRun(this, argv);
     }
 }
