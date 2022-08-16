@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
-import { BootstrapApplyCliCommand } from './bootstrap-apply';
-import { PipelineApplyCliCommand } from './pipeline-apply';
+import { bootstrapApplyCliRun } from './bootstrap-apply';
+import { pipelineApplyCliRun } from './pipeline-apply';
 import type { EnvironmentVariables } from './exec-utils';
 import type { Account, Instance } from './config';
 
@@ -142,12 +142,10 @@ export class CdkManager<A> {
     }
 
     runPipelineApplyFromArgv(argv: Array<string>): void {
-        const cmd = new PipelineApplyCliCommand(this);
-        cmd.run(argv);
+        pipelineApplyCliRun(this, argv);
     }
 
     runBootstrapApplyFromArgv(argv: Array<string>): void {
-        const cmd = new BootstrapApplyCliCommand(this);
-        cmd.run(argv);
+        bootstrapApplyCliRun(this, argv);
     }
 }
