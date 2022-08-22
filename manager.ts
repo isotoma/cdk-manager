@@ -50,6 +50,21 @@ export class CdkManager<A> {
         }
     }
 
+    getSubInstancesForAccount(accountName: string): Array<Instance<A>> {
+        const subInstances: Array<Instance<A>> = [];
+        for (const instance of this.instances) {
+            for (const subInstance of instance.sequencedInstances ?? []) {
+                if (subInstance.accountName === accountName) {
+                    subInstances.push({
+                        ...subInstance,
+                        branchName: instance.branchName,
+                    });
+                }
+            }
+        }
+        return subInstances;
+    }
+
     getInstancesForAccount(accountName: string): Array<Instance<A>> {
         const account = this.getAccount(accountName);
         const instances = [];
@@ -58,6 +73,8 @@ export class CdkManager<A> {
                 instances.push(inst);
             }
         }
+
+        instances.push(...this.getSubInstancesForAccount(accountName));
 
         return instances;
     }
