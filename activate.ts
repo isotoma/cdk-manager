@@ -81,7 +81,7 @@ export class ActivateCliCommand<A, M extends CdkManager<A>> extends BaseCliComma
 
         envVars['AWS_SDK_LOAD_CONFIG'] = '1';
 
-        const extra = this.manager.getExtraActivationEnvironmentVariables(account, instance);
+        const extra = await this.manager.getExtraActivationEnvironmentVariables(envVars, account, instance);
 
         this.printEnv({
             ...envVars,
