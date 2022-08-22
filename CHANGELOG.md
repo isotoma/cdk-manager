@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.5.0](https://github.com/isotoma/cdk-manager/compare/0.4.1...0.5.0)
+
+> 22 August 2022
+
+- Allow async getting activate env-vars [`#7`](https://github.com/isotoma/cdk-manager/pull/7)
+
 #### [0.4.1](https://github.com/isotoma/cdk-manager/compare/0.4.0...0.4.1)
 
 > 22 August 2022
