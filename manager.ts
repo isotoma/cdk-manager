@@ -138,7 +138,7 @@ export class CdkManager<A> {
         throw new Error('Not implemented');
     }
 
-    getExtraActivationEnvironmentVariables(account: Account, instance?: Instance<A>): EnvironmentVariables {
+    async getExtraActivationEnvironmentVariables(envVars: EnvironmentVariables, account: Account, instance?: Instance<A>): Promise<EnvironmentVariables> {
         return {};
     }
 
