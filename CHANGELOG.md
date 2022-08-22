@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.4.1](https://github.com/isotoma/cdk-manager/compare/0.4.0...0.4.1)
+
+> 22 August 2022
+
+- Fix getting subinstances [`#6`](https://github.com/isotoma/cdk-manager/pull/6)
+
 #### [0.4.0](https://github.com/isotoma/cdk-manager/compare/0.3.0...0.4.0)
 
 > 16 August 2022
