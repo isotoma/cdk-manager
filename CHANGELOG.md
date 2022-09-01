@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.5.2](https://github.com/isotoma/cdk-manager/compare/0.5.1...0.5.2)
+
+> 1 September 2022
+
+- Add --trust-for-lookup to bootstrap-apply [`#9`](https://github.com/isotoma/cdk-manager/pull/9)
+
 #### [0.5.1](https://github.com/isotoma/cdk-manager/compare/0.5.0...0.5.1)
 
 > 1 September 2022

@@ -1,6 +1,6 @@
 {
     "name": "cdk-manager",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "For managing CDK deployments",
     "license": "MIT",
     "author": {
