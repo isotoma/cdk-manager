@@ -61,7 +61,7 @@ export class BootstrapApplyCliCommand<A, M extends CdkManager<A>> extends BaseCl
         const trustFlags = [];
         for (const trustedAccountNumber of trustedAccountNumbers) {
             trustFlags.push(...['--trust', trustedAccountNumber]);
-            trustFlags.push(...['--trust-for-lookup', trustedAccountNumbers]);
+            trustFlags.push(...['--trust-for-lookup', trustedAccountNumber]);
         }
 
         const commands: Array<CommandSet> = [];
