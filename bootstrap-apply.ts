@@ -1,9 +1,9 @@
-import type { CdkManager } from './manager';
-import { BaseCliCommand } from './cli-utils';
-import { execPromise, executeCommand, commandSetToString } from './exec-utils';
-import type { CommandSet, EnvironmentVariables } from './exec-utils';
-import { parse as parseYaml } from 'yaml';
 import * as cmdTs from 'cmd-ts';
+import { parse as parseYaml } from 'yaml';
+import { BaseCliCommand } from './cli-utils';
+import type { CommandSet, EnvironmentVariables } from './exec-utils';
+import { commandSetToString, execPromise, executeCommand } from './exec-utils';
+import type { CdkManager } from './manager';
 
 export const bootstrapApplyCliArgs = {
     account: cmdTs.option({
@@ -61,6 +61,7 @@ export class BootstrapApplyCliCommand<A, M extends CdkManager<A>> extends BaseCl
         const trustFlags = [];
         for (const trustedAccountNumber of trustedAccountNumbers) {
             trustFlags.push(...['--trust', trustedAccountNumber]);
+            trustFlags.push(...['--trust-for-lookup', trustedAccountNumber]);
         }
 
         const commands: Array<CommandSet> = [];
