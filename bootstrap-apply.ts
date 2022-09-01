@@ -69,7 +69,7 @@ export class BootstrapApplyCliCommand<A, M extends CdkManager<A>> extends BaseCl
             NO_SYNTH: 'yes',
         };
         if (!noDefaultProfiles) {
-            env['AWS_PROFILE'] = this.manager.getDefaultPipelineDeploymentProfile(account);
+            env['AWS_PROFILE'] = this.manager.getDefaultBootstrapDeploymentProfile(account);
         }
 
         for (const selectedRegion of selectedRegions) {
