@@ -147,6 +147,11 @@ export class CdkManager<A> {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getDefaultBootstrapDeploymentProfile(account: Account): string {
+        throw new Error('Unknown default bootstrap profile');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getDefaultPipelineDeploymentProfile(account: Account, instance?: Instance<A>): string {
         throw new Error('Unknown default deployment profile');
     }
