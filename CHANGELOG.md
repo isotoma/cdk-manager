@@ -1,6 +1,6 @@
 ### Changelog
 
-#### [0.5.2](https://github.com/isotoma/cdk-manager/compare/0.5.1...0.5.2)
+#### [0.5.3](https://github.com/isotoma/cdk-manager/compare/0.5.1...0.5.3)
 
 > 1 September 2022
 
