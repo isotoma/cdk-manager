@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.5.1](https://github.com/isotoma/cdk-manager/compare/0.5.0...0.5.1)
+
+> 1 September 2022
+
+- Fix bootstrap apply AWS profiles [`#8`](https://github.com/isotoma/cdk-manager/pull/8)
+
 #### [0.5.0](https://github.com/isotoma/cdk-manager/compare/0.4.1...0.5.0)
 
 > 22 August 2022
