@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.6.0](https://github.com/isotoma/cdk-manager/compare/0.5.3...0.6.0)
+
+> 13 September 2022
+
+- Reference to pipeline available in PipelineStack [`#10`](https://github.com/isotoma/cdk-manager/pull/10)
+
 #### [0.5.3](https://github.com/isotoma/cdk-manager/compare/0.5.1...0.5.3)
 
 > 1 September 2022
