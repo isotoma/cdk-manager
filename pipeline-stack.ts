@@ -81,7 +81,15 @@ export class PipelineStack<A> extends Stack {
         return [];
     }
 
-    getOtherPipelineProps(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps) {
+    getPipelineSynthProjectAllowedRoleArns(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps): string[] {
+        const cdkLookupRolePrefix = 'cdk-hnb659fds-lookup-role';
+        return [
+            `arn:aws:iam::${accountConfig.accountNumber}:role/${cdkLookupRolePrefix}-${accountConfig.accountNumber}-${this.region}`,
+            `arn:aws:iam::${this.account}:role/${cdkLookupRolePrefix}-${this.account}-${this.region}`,
+        ]
+    }
+
+    getOtherPipelineProps(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps): Partial<pipelines.CodePipelineProps> {
         return {}
     }
 
@@ -150,17 +158,16 @@ export class PipelineStack<A> extends Stack {
         );
 
         this.pipeline.buildPipeline();
-        this.pipeline.synthProject.addToRolePolicy(
-            new iam.PolicyStatement({
-                effect: iam.Effect.ALLOW,
-                actions: ['sts:AssumeRole'],
-                resources: [
-                    // what about if we are deploying to a different region, or to multiple accounts and regions?
-                    `arn:aws:iam::${accountConfig.accountNumber}:role/cdk-hnb659fds-lookup-role-${accountConfig.accountNumber}-${this.region}`,
-                    `arn:aws:iam::${this.account}:role/cdk-hnb659fds-lookup-role-${this.account}-${this.region}`
-                ]
-            })
-        );
+        const allowedRoles = this.getPipelineSynthProjectAllowedRoleArns(accountConfig, pipelineConfig, stackProps);
+        if(allowedRoles) {
+            this.pipeline.synthProject.addToRolePolicy(
+                new iam.PolicyStatement({
+                    effect: iam.Effect.ALLOW,
+                    actions: ['sts:AssumeRole'],
+                    resources: allowedRoles
+                })
+            );
+        }
 
     }
 }
