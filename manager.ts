@@ -138,6 +138,7 @@ export class CdkManager<A> {
         throw new Error('Not implemented');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async getExtraActivationEnvironmentVariables(envVars: EnvironmentVariables, account: Account, instance?: Instance<A>): Promise<EnvironmentVariables> {
         return {};
     }

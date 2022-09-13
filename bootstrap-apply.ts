@@ -147,9 +147,12 @@ export class BootstrapApplyCliCommand<A, M extends CdkManager<A>> extends BaseCl
 
 export const bootstrapApplyCliRun = <A, M extends CdkManager<A>>(manager: M, argv: Array<string>): void => {
     const cls = new BootstrapApplyCliCommand(manager);
-    cmdTs.run(cmdTs.command({
-        name: 'bootstrap-apply',
-        args: bootstrapApplyCliArgs,
-        handler: cls.handler.bind(cls),
-    }), argv);
+    cmdTs.run(
+        cmdTs.command({
+            name: 'bootstrap-apply',
+            args: bootstrapApplyCliArgs,
+            handler: cls.handler.bind(cls),
+        }),
+        argv,
+    );
 };

@@ -81,16 +81,18 @@ export class PipelineStack<A> extends Stack {
         return [];
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getPipelineSynthProjectAllowedRoleArns(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps): string[] {
         const cdkLookupRolePrefix = 'cdk-hnb659fds-lookup-role';
         return [
             `arn:aws:iam::${accountConfig.accountNumber}:role/${cdkLookupRolePrefix}-${accountConfig.accountNumber}-${this.region}`,
             `arn:aws:iam::${this.account}:role/${cdkLookupRolePrefix}-${this.account}-${this.region}`,
-        ]
+        ];
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getOtherPipelineProps(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps): Partial<pipelines.CodePipelineProps> {
-        return {}
+        return {};
     }
 
     public readonly manager: CdkManager<A>;
@@ -159,15 +161,14 @@ export class PipelineStack<A> extends Stack {
 
         this.pipeline.buildPipeline();
         const allowedRoles = this.getPipelineSynthProjectAllowedRoleArns(accountConfig, pipelineConfig, stackProps);
-        if(allowedRoles.length > 0) {
+        if (allowedRoles.length > 0) {
             this.pipeline.synthProject.addToRolePolicy(
                 new iam.PolicyStatement({
                     effect: iam.Effect.ALLOW,
                     actions: ['sts:AssumeRole'],
-                    resources: allowedRoles
-                })
+                    resources: allowedRoles,
+                }),
             );
         }
-
     }
 }
