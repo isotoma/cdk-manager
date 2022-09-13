@@ -1,10 +1,10 @@
-import type { CdkManager } from './manager';
-import type { Account, Instance, SubInstance } from './config';
 import { Stack, StackProps, Stage, StageProps } from 'aws-cdk-lib';
-import * as pipelines from 'aws-cdk-lib/pipelines';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as pipelines from 'aws-cdk-lib/pipelines';
 import type { Construct } from 'constructs';
-import * as cdk from 'aws-cdk-lib';
+import type { Account, Instance, SubInstance } from './config';
+import type { CdkManager } from './manager';
 
 export const filterNils = <A>(array: Array<A | undefined>): Array<A> => {
     const filtered: Array<A> = [];
@@ -81,6 +81,18 @@ export class PipelineStack<A> extends Stack {
         return [];
     }
 
+    getPipelineSynthProjectAllowedRoleArns(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps): string[] {
+        const cdkLookupRolePrefix = 'cdk-hnb659fds-lookup-role';
+        return [
+            `arn:aws:iam::${accountConfig.accountNumber}:role/${cdkLookupRolePrefix}-${accountConfig.accountNumber}-${this.region}`,
+            `arn:aws:iam::${this.account}:role/${cdkLookupRolePrefix}-${this.account}-${this.region}`,
+        ]
+    }
+
+    getOtherPipelineProps(accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps): Partial<pipelines.CodePipelineProps> {
+        return {}
+    }
+
     public readonly manager: CdkManager<A>;
     public readonly pipeline: pipelines.CodePipeline;
 
@@ -111,6 +123,7 @@ export class PipelineStack<A> extends Stack {
                     computeType: codebuild.ComputeType.MEDIUM,
                 },
             },
+            ...this.getOtherPipelineProps(accountConfig, pipelineConfig, stackProps),
         });
 
         if (pipelineConfig.sequencedInstances) {
@@ -145,5 +158,16 @@ export class PipelineStack<A> extends Stack {
         );
 
         this.pipeline.buildPipeline();
+        const allowedRoles = this.getPipelineSynthProjectAllowedRoleArns(accountConfig, pipelineConfig, stackProps);
+        if(allowedRoles.length > 0) {
+            this.pipeline.synthProject.addToRolePolicy(
+                new iam.PolicyStatement({
+                    effect: iam.Effect.ALLOW,
+                    actions: ['sts:AssumeRole'],
+                    resources: allowedRoles
+                })
+            );
+        }
+
     }
 }
