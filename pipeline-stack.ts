@@ -159,7 +159,7 @@ export class PipelineStack<A> extends Stack {
 
         this.pipeline.buildPipeline();
         const allowedRoles = this.getPipelineSynthProjectAllowedRoleArns(accountConfig, pipelineConfig, stackProps);
-        if(allowedRoles) {
+        if(allowedRoles.length > 0) {
             this.pipeline.synthProject.addToRolePolicy(
                 new iam.PolicyStatement({
                     effect: iam.Effect.ALLOW,
