@@ -82,12 +82,13 @@ export class PipelineStack<A> extends Stack {
     }
 
     public readonly manager: CdkManager<A>;
+    public readonly pipeline: pipelines.CodePipeline;
 
     constructor(scope: Construct, id: string, manager: CdkManager<A>, accountConfig: Account, pipelineConfig: Instance<A>, stackProps: StackProps) {
         super(scope, id, stackProps);
         this.manager = manager;
 
-        const pipeline = new pipelines.CodePipeline(this, 'pipeline', {
+        this.pipeline = new pipelines.CodePipeline(this, 'pipeline', {
             dockerEnabledForSynth: false,
             synth: new pipelines.ShellStep('synth', {
                 input: this.getSourceConnection(accountConfig, pipelineConfig),
@@ -115,7 +116,7 @@ export class PipelineStack<A> extends Stack {
         if (pipelineConfig.sequencedInstances) {
             for (const sequencedPipeline of pipelineConfig.sequencedInstances) {
                 const sequencedAccount = manager.getAccount(sequencedPipeline.accountName);
-                pipeline.addStage(
+                this.pipeline.addStage(
                     this.createStage(sequencedAccount, sequencedPipeline),
                     sequencedPipeline.requiresApproval
                         ? {
@@ -130,7 +131,7 @@ export class PipelineStack<A> extends Stack {
             }
         }
 
-        pipeline.addStage(
+        this.pipeline.addStage(
             this.createStage(accountConfig, pipelineConfig),
             pipelineConfig.requiresApproval
                 ? {
@@ -143,6 +144,6 @@ export class PipelineStack<A> extends Stack {
                 : {},
         );
 
-        pipeline.buildPipeline();
+        this.pipeline.buildPipeline();
     }
 }
