@@ -2,7 +2,7 @@ import type { CdkManager } from './manager';
 import type { Account, Instance } from './config';
 import { BaseCliCommand } from './cli-utils';
 import { execPromise, executeCommand, commandSetToString } from './exec-utils';
-import type { CommandSet, EnvironmentVariables } from './exec-utils';
+import type { CommandSet } from './exec-utils';
 import * as cmdTs from 'cmd-ts';
 
 export const pipelineApplyCliArgs = {
@@ -131,9 +131,12 @@ export class PipelineApplyCliCommand<A, M extends CdkManager<A>> extends BaseCli
 
 export const pipelineApplyCliRun = <A, M extends CdkManager<A>>(manager: M, argv: Array<string>): void => {
     const cls = new PipelineApplyCliCommand(manager);
-    cmdTs.run(cmdTs.command({
-        name: 'pipeline-apply',
-        args: pipelineApplyCliArgs,
-        handler: cls.handler.bind(cls),
-    }), argv);
+    cmdTs.run(
+        cmdTs.command({
+            name: 'pipeline-apply',
+            args: pipelineApplyCliArgs,
+            handler: cls.handler.bind(cls),
+        }),
+        argv,
+    );
 };

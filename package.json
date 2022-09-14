@@ -21,8 +21,9 @@
         "clean": "rm -rf build/",
         "compile": "npm run clean && npm run -- tsc --outDir build/ && cp package.json README.md ./build/",
         "version": "auto-changelog --template ./changelog_template.hbs -p && git add CHANGELOG.md",
-        "lint": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --fix",
-        "lint-check": "eslint 'index.ts' 'test/**/*.ts' jest.config.js --max-warnings 0"
+        "_lint": "eslint '*.ts' 'test/**/*.ts' jest.config.js",
+        "lint": "npm run -- _lint --fix",
+        "lint-check": "npm run -- _lint --max-warnings 0"
     },
     "peerDependencies": {
         "aws-cdk-lib": "^2.0.0",

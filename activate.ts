@@ -1,6 +1,6 @@
 import type { CdkManager } from './manager';
-import { BaseCliCommand } from './cli-utils'
-import type { EnvironmentVariables } from './exec-utils';;
+import { BaseCliCommand } from './cli-utils';
+import type { EnvironmentVariables } from './exec-utils';
 import * as cmdTs from 'cmd-ts';
 
 export const activateCliArgs = {
@@ -35,12 +35,11 @@ export interface ActivateCliCommandArgs {
 }
 
 export class ActivateCliCommand<A, M extends CdkManager<A>> extends BaseCliCommand<A, M> {
-
     printEnv(envVars: EnvironmentVariables): void {
         for (const [envVarName, envVarValue] of Object.entries(envVars)) {
             console.log(`export ${envVarName}="${envVarValue}"`);
         }
-    };
+    }
 
     async handler(args: ActivateCliCommandArgs): Promise<void> {
         const { account: accountNameInput, suffix, pipelineAccount, region, noDefaultProfiles } = args;
@@ -55,7 +54,6 @@ export class ActivateCliCommand<A, M extends CdkManager<A>> extends BaseCliComma
         const envVars: EnvironmentVariables = {};
         if (!noDefaultProfiles) {
             if (pipelineAccount) {
-                
                 envVars['AWS_PROFILE'] = this.manager.getDefaultPipelineDeploymentProfile(account, instance);
             } else if (instance) {
                 envVars['AWS_PROFILE'] = this.manager.getDefaultInstanceProfile(account, instance);
@@ -92,9 +90,12 @@ export class ActivateCliCommand<A, M extends CdkManager<A>> extends BaseCliComma
 
 export const activateCliRun = <A, M extends CdkManager<A>>(manager: M, argv: Array<string>): void => {
     const cls = new ActivateCliCommand(manager);
-    cmdTs.run(cmdTs.command({
-        name: 'activate',
-        args: activateCliArgs,
-        handler: cls.handler.bind(cls),
-    }), argv);
+    cmdTs.run(
+        cmdTs.command({
+            name: 'activate',
+            args: activateCliArgs,
+            handler: cls.handler.bind(cls),
+        }),
+        argv,
+    );
 };
