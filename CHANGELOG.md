@@ -1,5 +1,12 @@
 ### Changelog
 
+#### [0.7.0](https://github.com/isotoma/cdk-manager/compare/0.6.0...0.7.0)
+
+> 14 September 2022
+
+- Actually enforce linting [`#12`](https://github.com/isotoma/cdk-manager/pull/12)
+- Add more pipeline customisation and permissions [`#11`](https://github.com/isotoma/cdk-manager/pull/11)
+
 #### [0.6.0](https://github.com/isotoma/cdk-manager/compare/0.5.3...0.6.0)
 
 > 13 September 2022
