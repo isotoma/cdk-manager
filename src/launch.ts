@@ -1,6 +1,4 @@
-import * as cdk from 'aws-cdk-lib';
 import { Deployment } from './interfaces';
-import { PipelineStack, PipelineStackProps } from './pipeline-stack';
 
 export const _deploymentSelector = (deployments: Deployment[], targetAccount: string, targetSuffix?: string): Deployment => {
     const matching = deployments.filter((d: Deployment): boolean => {
@@ -36,11 +34,3 @@ export const deploymentSelector = (deployments: Deployment[]): Deployment => {
     const targetSuffix = process.env['TARGET_SUFFIX'];
     return _deploymentSelector(deployments, targetAccount, targetSuffix);
 };
-
-export class Launcher {
-    makePipelineApp(id: string, props: PipelineStackProps): cdk.App {
-        const app = new cdk.App();
-        new PipelineStack(app, id, props);
-        return app;
-    }
-}
