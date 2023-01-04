@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.8.0](https://github.com/isotoma/cdk-manager/compare/0.7.0...0.8.0)
+
+> 4 January 2023
+
+- Add method for finding parent instance [`#14`](https://github.com/isotoma/cdk-manager/pull/14)
+
 #### [0.7.0](https://github.com/isotoma/cdk-manager/compare/0.6.0...0.7.0)
 
 > 14 September 2022
