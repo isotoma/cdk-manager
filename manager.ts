@@ -133,6 +133,18 @@ export class CdkManager<A> {
         throw new Error('Not implemented');
     }
 
+    getParentInstanceForInstance(instance: Instance<A>): Instance<A> | null {
+        for (const inst of this.instances) {
+            for (const subInst of inst.sequencedInstances ?? []) {
+                if (subInst.suffix == instance.suffix && subInst.accountName === instance.accountName) {
+                    return inst;
+                }
+            }
+        }
+
+        return null;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getPipelineStackName(account: Account, instance: Instance<A>): string {
         throw new Error('Not implemented');
