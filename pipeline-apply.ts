@@ -100,11 +100,13 @@ export class PipelineApplyCliCommand<A, M extends CdkManager<A>> extends BaseCli
         const selectedAccountNames = account ? [account] : this.manager.getAccountNames();
         const commands = [];
 
-        try {
-            await execPromise('git diff --quiet');
-        } catch (err) {
-            console.error('Working directory not clean, aborting. Commit code, then try again.');
-            throw err;
+        if (apply) {
+            try {
+                await execPromise('git diff --quiet');
+            } catch (err) {
+                console.error('Working directory not clean, aborting. Commit code, then try again.');
+                throw err;
+            }
         }
 
         for (const selectedAccountName of selectedAccountNames) {
