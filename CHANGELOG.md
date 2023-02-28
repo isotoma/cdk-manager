@@ -1,5 +1,13 @@
 ### Changelog
 
+#### [0.9.0](https://github.com/isotoma/cdk-manager/compare/0.8.0...0.9.0)
+
+> 28 February 2023
+
+- Badges [`#18`](https://github.com/isotoma/cdk-manager/pull/18)
+- Docs and examples [`#16`](https://github.com/isotoma/cdk-manager/pull/16)
+- Pipelines apply: do not require clean checkout if just printing [`#17`](https://github.com/isotoma/cdk-manager/pull/17)
+
 #### [0.8.0](https://github.com/isotoma/cdk-manager/compare/0.7.0...0.8.0)
 
 > 4 January 2023
