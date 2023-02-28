@@ -1,5 +1,9 @@
 # cdk-manager
 
+[![GitHub license](https://img.shields.io/github/license/isotoma/cdk-manager)](https://github.com/isotoma/cdk-manager/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/cdk-manager)](https://www.npmjs.com/package/cdk-manager)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/isotoma/cdk-manager/test.yaml?branch=main)
+
 This couples together three separate, but related CDK-related tasks:
 
 - configuration of self-hosted CDK pipelines and deploying them
