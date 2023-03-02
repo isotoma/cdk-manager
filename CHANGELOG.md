@@ -1,5 +1,11 @@
 ### Changelog
 
+#### [0.9.1](https://github.com/isotoma/cdk-manager/compare/0.9.0...0.9.1)
+
+> 2 March 2023
+
+- Fix README formatting bug [`#19`](https://github.com/isotoma/cdk-manager/pull/19)
+
 #### [0.9.0](https://github.com/isotoma/cdk-manager/compare/0.8.0...0.9.0)
 
 > 28 February 2023
