@@ -235,6 +235,7 @@ const instances: Array<Instance<Config>> = [{
     requiresApproval: false,
 // ...
 }];
+```
 
 # Sequenced instances
 
