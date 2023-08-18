@@ -1,8 +1,10 @@
-# cdk-manager
+# rgdl-cdk-manager
 
-[![GitHub license](https://img.shields.io/github/license/isotoma/cdk-manager)](https://github.com/isotoma/cdk-manager/blob/main/LICENSE)
-[![npm](https://img.shields.io/npm/v/cdk-manager)](https://www.npmjs.com/package/cdk-manager)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/isotoma/cdk-manager/test.yaml?branch=main)
+This is a fork of [isotoma cdk manager](https://github.com/isotoma/cdk-manager) so we can add updates ourselves and not be reliant on a third party that no longer works for us.
+
+[![GitHub license](https://img.shields.io/github/license/regsimple/rgdl-cdk-manager)](https://github.com/regsimple/rgdl-cdk-manager/blob/main/LICENSE)
+<!-- [![npm](https://img.shields.io/npm/v/cdk-manager)](https://www.npmjs.com/package/cdk-manager) -->
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/regsimple/rgdl-cdk-manager/test.yaml?branch=main)
 
 This couples together three separate, but related CDK-related tasks:
 
@@ -10,7 +12,7 @@ This couples together three separate, but related CDK-related tasks:
 - CDK bootstrapping
 - setting environment variables to interact with those pipelines or
   the environments those pipelines deploy (termed here "activating")
-  
+
 ## Assumed knowledge
 
 - CDK's self-hosted pipelines: https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.pipelines-readme.html

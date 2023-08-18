@@ -1,9 +1,8 @@
-name: Node.js Package
+name: Github Package
 on:
   push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,9 +12,10 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '16.x'
-        registry-url: 'https://registry.npmjs.org'
+        registry-url: 'https://npm.pkg.github.com'
+        scope: regsimple
     - run: npm ci
     - run: npm run compile
     - run: cd build && npm publish
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

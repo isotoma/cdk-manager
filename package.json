@@ -1,5 +1,5 @@
 {
-    "name": "cdk-manager",
+    "name": "@regsimple/rgdl-cdk-manager",
     "version": "0.9.1",
     "description": "For managing CDK deployments",
     "license": "MIT",
