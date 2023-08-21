@@ -60,6 +60,8 @@ export class PipelineStack<A> extends Stack {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getCodeBuildOptions(accountConfig: Account, pipelineConfig: Instance<A>): pipelines.CodeBuildOptions {
+        const nodeVersion = pipelineConfig.nodeVersion ? pipelineConfig.nodeVersion : 16;
+
         return {
             buildEnvironment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_6_0,
@@ -68,7 +70,7 @@ export class PipelineStack<A> extends Stack {
                 phases: {
                     install: {
                         'runtime-versions': {
-                            nodejs: '16.x',
+                            nodejs: `${nodeVersion}.x`,
                         },
                     },
                 },
