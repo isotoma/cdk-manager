@@ -15,11 +15,15 @@ export interface Account {
     cdkBootstrap?: CdkBootstrapConfigEnabled | CdkBootstrapConfigDisabled;
 }
 
+// support either 16 or 18 as the version of Node
+type NodeVersion = 16 | 18;
+
 export interface SubInstance<A> {
     applicationConfig: A;
     accountName: string;
     requiresApproval: boolean;
     suffix?: string;
+    nodeVersion?: NodeVersion;
 }
 
 export interface Instance<A> extends SubInstance<A> {
@@ -28,5 +32,6 @@ export interface Instance<A> extends SubInstance<A> {
     branchName: string;
     requiresApproval: boolean;
     suffix?: string;
+    nodeVersion?: NodeVersion;
     sequencedInstances?: Array<SubInstance<A>>;
 }
