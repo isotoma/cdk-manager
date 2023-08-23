@@ -61,10 +61,11 @@ export class PipelineStack<A> extends Stack {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getCodeBuildOptions(accountConfig: Account, pipelineConfig: Instance<A>): pipelines.CodeBuildOptions {
         const nodeVersion = pipelineConfig.nodeVersion ? pipelineConfig.nodeVersion : 16;
+        const buildImage = pipelineConfig.nodeVersion == 18 ? codebuild.LinuxBuildImage.STANDARD_7_0 : codebuild.LinuxBuildImage.STANDARD_6_0;
 
         return {
             buildEnvironment: {
-                buildImage: codebuild.LinuxBuildImage.STANDARD_6_0,
+                buildImage: buildImage,
             },
             partialBuildSpec: codebuild.BuildSpec.fromObject({
                 phases: {
