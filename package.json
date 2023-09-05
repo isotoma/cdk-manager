@@ -35,7 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "4.8.2",
     "auto-changelog": "^1.16.2",
-    "aws-cdk-lib": "2.92.0",
+    "aws-cdk-lib": "^2.92.0",
     "constructs": "^10.0.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.9.0",
